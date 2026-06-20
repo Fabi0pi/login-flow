@@ -1,4 +1,5 @@
 import { jwtVerify, SignJWT } from "jose";
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET!); // jose vuole il segreto come Uint8Array, non come stringa. TextEncoder converte la stringa UTF-8 in bytes.
 
@@ -16,10 +17,10 @@ export const signToken = async (payload: JWT_payload): Promise<string> => {
 };
 
 export const verifyToken = async (
-  token: string,
+  token: string | RequestCookie,
 ): Promise<JWT_payload | null> => {
   try {
-    const { payload } = await jwtVerify(token, secret);
+    const { payload } = await jwtVerify(token as string, secret);
     return payload as JWT_payload;
   } catch {
     return null;
