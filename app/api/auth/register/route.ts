@@ -29,10 +29,9 @@ export async function POST(req: Request) {
     return Response.json({ error: "Email already in use" }, { status: 409 });
   }
 
-  const pw_hash = await bcrypt.hash(password, 12); // Il 12 è il cost factor: bcrypt esegue 2^12 = 4096 iterazioni interne. Ogni punto in più raddoppia il tempo. A 12 rounds un hash richiede ~300-400ms — abbastanza lento da rendere il brute force
-  // impraticabile, abbastanza veloce da non impattare l'UX del login.
+  const password_hash = await bcrypt.hash(password, 12);
 
-  const { error } = await supabase.from("users").insert({ email, pw_hash });
+  const { error } = await supabase.from("users").insert({ email, password_hash });
 
   if (error) {
     return Response.json({ error: "Registration failed" }, { status: 500 });

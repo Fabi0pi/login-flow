@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "./Lib/jwt";
 
-const PUBLIC_ROUTES = ["/", "/login", "/register"];
+const PUBLIC_ROUTES = ["/login", "/register"];
 
 export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -9,12 +9,11 @@ export async function proxy(req: NextRequest) {
   const payload = token ? await verifyToken(token) : null;
   const isAuthenticated = payload !== null;
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
-  const isGreenLight = isAuthenticated && isPublicRoute;
-
-  if (isGreenLight) {
+  if (isAuthenticated && isPublicRoute) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
-  if (!isGreenLight) {
+
+  if (!isAuthenticated && !isPublicRoute) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 

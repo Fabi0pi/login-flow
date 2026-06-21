@@ -2,8 +2,7 @@ import { signToken } from "@/Lib/jwt";
 import { supabase } from "@/Lib/supabase";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
-import { use } from "react";
-import { success, z } from "zod";
+import { z } from "zod";
 
 const loginSchema = z.object({
   email: z.email(),
@@ -37,7 +36,7 @@ export async function POST(req: Request) {
 
   const token = await signToken({ email: user.email, sub: user.id });
   const cookieStore = await cookies();
-  cookieStore.set("auth_tkn", token, {
+  cookieStore.set("auth_token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
