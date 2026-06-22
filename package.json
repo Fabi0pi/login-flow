@@ -7,8 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest",   
-    "test:ui": "vitest --ui"
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:e2e": "playwright test" 
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",
@@ -21,6 +22,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.0",
     "@tailwindcss/postcss": "^4",
     "@tanstack/react-query-devtools": "^5.101.0",
     "@testing-library/jest-dom": "^6.9.1",
